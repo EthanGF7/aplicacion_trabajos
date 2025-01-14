@@ -1,3 +1,4 @@
+import 'package:aplicacion_trabajos/componentes/dialog_nuevo_trabajo.dart';
 import 'package:aplicacion_trabajos/componentes/item_trabajo.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,10 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     });
   }
 
+  void crearNuevoTrabajo() {
+    showDialog(context: context, builder: (context) {return const DialogNuevoTrabajo();});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +48,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.teal[300],
         shape: const CircleBorder(),
-        onPressed: () {},
+        onPressed: crearNuevoTrabajo,
         child: Icon(
           Icons.add,
           color: Colors.orange[200],
