@@ -9,13 +9,25 @@ class PaginaPrincipal extends StatefulWidget {
 }
 
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
-
   List trabajosLista = [
     {"titulo": "Trabajo 1", "valor": false},
     {"titulo": "Trabajo 2", "valor": true},
+    {"titulo": "Trabajo 3", "valor": false},
   ];
 
-  @override 
+  void cambiaCheckbox(bool valorCheckbox, int posLista) {
+    setState(() {
+      trabajosLista[posLista]["valor"] = !trabajosLista[posLista]["valor"]; 
+    });
+  }
+
+  void accionBorrarTrabajo(int posLista) {
+    setState(() {
+      trabajosLista.removeAt(posLista);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal[100],
@@ -32,21 +44,23 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
         backgroundColor: Colors.teal[300],
         shape: const CircleBorder(),
         onPressed: () {},
-        child: Icon(Icons.add, color: Colors.orange[200],),
+        child: Icon(
+          Icons.add,
+          color: Colors.orange[200],
         ),
+      ),
 
       //Body
       body: ListView.builder(
-        itemCount: trabajosLista.length,
-        itemBuilder: (context, index) {
-
-          return ItemTrabajo(
-            textoTrabajo: trabajosLista[index]["titulo"],  
-            valorCheckbox: trabajosLista[index]["valor"],
+          itemCount: trabajosLista.length,
+          itemBuilder: (context, index) {
+            return ItemTrabajo(
+              textoTrabajo: trabajosLista[index]["titulo"],
+              valorCheckbox: trabajosLista[index]["valor"],
+              cambiaValorCheckbox: (valor) => cambiaCheckbox(trabajosLista[index]["valor"], index),
+             borraTrabajo: (valor) => accionBorrarTrabajo(index),
             );
-        }
-        ),
-
+          }),
     );
   }
 }
