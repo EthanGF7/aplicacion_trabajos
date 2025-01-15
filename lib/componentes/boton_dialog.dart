@@ -12,7 +12,7 @@ class BotonDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(onPressed: accionBoton,
-    color: Colors.teal[200],
+    color: Colors.teal[300],
     child: Text(textoBoton),
     );
   }

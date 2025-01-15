@@ -2,7 +2,16 @@ import 'package:aplicacion_trabajos/componentes/boton_dialog.dart';
 import 'package:flutter/material.dart';
 
 class DialogNuevoTrabajo extends StatelessWidget {
-  const DialogNuevoTrabajo({super.key});
+  final TextEditingController tecTexTrabajo;
+  final Function()? accionGuardar;
+  final Function()? accionCancelar;
+
+  const DialogNuevoTrabajo({
+    super.key,
+    required this.tecTexTrabajo,
+    required this.accionGuardar,
+    required this.accionCancelar,
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +21,24 @@ class DialogNuevoTrabajo extends StatelessWidget {
       content: Container(
         height: 200,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            TextField(),
+            TextField(
+              controller: tecTexTrabajo,
+              cursorColor: Colors.orange[300],
+              decoration: InputDecoration(
+                hintText: "Escribe el trabajo...",
+                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.teal[100],
+              ),
+            ),
+            SizedBox(height: 10,),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BotonDialog(textoBoton: "Guardar", accionBoton: (){}),//Boton guardar
-                BotonDialog(textoBoton: "Cancelar", accionBoton: (){}),//Boton cancelar
+                BotonDialog(textoBoton: "Guardar", accionBoton: accionGuardar),//Boton guardar
+                BotonDialog(textoBoton: "Cancelar", accionBoton: accionCancelar),//Boton cancelar
               ],
             ),
           ],

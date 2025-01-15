@@ -16,6 +16,23 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     {"titulo": "Trabajo 3", "valor": false},
   ];
 
+  TextEditingController tecTexTrabajo =TextEditingController();
+
+  void accionGuardar () {
+    setState(() {
+      trabajosLista.add({
+        "titulo": tecTexTrabajo.text,
+        "valor": false,
+        });
+        accionCancelar();
+    });
+  }
+
+  void accionCancelar () {
+    Navigator.of(context).pop();
+    tecTexTrabajo.clear();
+  }
+
   void cambiaCheckbox(bool valorCheckbox, int posLista) {
     setState(() {
       trabajosLista[posLista]["valor"] = !trabajosLista[posLista]["valor"]; 
@@ -29,7 +46,12 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
   }
 
   void crearNuevoTrabajo() {
-    showDialog(context: context, builder: (context) {return const DialogNuevoTrabajo();});
+    showDialog(context: context, builder: (context) {return DialogNuevoTrabajo(
+      tecTexTrabajo: tecTexTrabajo,
+      accionGuardar: accionGuardar,
+      accionCancelar: accionCancelar,
+      );
+      });
   }
 
   @override
@@ -63,7 +85,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               textoTrabajo: trabajosLista[index]["titulo"],
               valorCheckbox: trabajosLista[index]["valor"],
               cambiaValorCheckbox: (valor) => cambiaCheckbox(trabajosLista[index]["valor"], index),
-             borraTrabajo: (valor) => accionBorrarTrabajo(index),
+              borraTrabajo: (valor) => accionBorrarTrabajo(index),
             );
           }),
     );
