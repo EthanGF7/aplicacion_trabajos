@@ -1,6 +1,8 @@
 import 'package:aplicacion_trabajos/componentes/dialog_nuevo_trabajo.dart';
 import 'package:aplicacion_trabajos/componentes/item_trabajo.dart';
+import 'package:aplicacion_trabajos/data/base_de_datos.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class PaginaPrincipal extends StatefulWidget {
   const PaginaPrincipal({super.key});
@@ -10,20 +12,24 @@ class PaginaPrincipal extends StatefulWidget {
 }
 
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
-  List trabajosLista = [
+ /* List trabajosLista = [
     {"titulo": "Trabajo 1", "valor": false},
     {"titulo": "Trabajo 2", "valor": true},
     {"titulo": "Trabajo 3", "valor": false},
-  ];
+  ];*/
+
+  final Box _boxHive = Hive.box("box_trabajos_add"); 
+  BaseDeDatos db = BaseDeDatos();
 
   TextEditingController tecTexTrabajo =TextEditingController();
 
   void accionGuardar () {
     setState(() {
-      trabajosLista.add({
+      db.trabajosLista.add({
         "titulo": tecTexTrabajo.text,
         "valor": false,
         });
+        db.actualizardatos();
         accionCancelar();
     });
   }
@@ -35,14 +41,16 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
 
   void cambiaCheckbox(bool valorCheckbox, int posLista) {
     setState(() {
-      trabajosLista[posLista]["valor"] = !trabajosLista[posLista]["valor"]; 
+      db.trabajosLista[posLista]["valor"] = !db.trabajosLista[posLista]["valor"]; 
     });
+    db.actualizardatos();
   }
 
   void accionBorrarTrabajo(int posLista) {
     setState(() {
-      trabajosLista.removeAt(posLista);
+      db.trabajosLista.removeAt(posLista);
     });
+    db.actualizardatos();
   }
 
   void crearNuevoTrabajo() {
@@ -79,12 +87,12 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
 
       //Body
       body: ListView.builder(
-          itemCount: trabajosLista.length,
+          itemCount: db.trabajosLista.length,
           itemBuilder: (context, index) {
             return ItemTrabajo(
-              textoTrabajo: trabajosLista[index]["titulo"],
-              valorCheckbox: trabajosLista[index]["valor"],
-              cambiaValorCheckbox: (valor) => cambiaCheckbox(trabajosLista[index]["valor"], index),
+              textoTrabajo: db.trabajosLista[index]["titulo"],
+              valorCheckbox: db.trabajosLista[index]["valor"],
+              cambiaValorCheckbox: (valor) => cambiaCheckbox(db.trabajosLista[index]["valor"], index),
               borraTrabajo: (valor) => accionBorrarTrabajo(index),
             );
           }),
